@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Allow direct access to api scripts and route api/ to api/index.php
+  RewriteCond %{REQUEST_URI} ^/api/sync_cron\.php [NC]
+  RewriteRule ^ - [L]
+
+  RewriteRule ^api/(.*)$ api/index.php [QSA,L]
+
+  # 2. Serve static files (JS, CSS, images, SVGs, etc.) if they exist
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # 3. Route all other routes to React Single Page App (index.html)
+  RewriteRule ^ index.html [L]
+</IfModule>
